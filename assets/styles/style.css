@@ -4,7 +4,7 @@
 body.body {
     margin: 0;
     padding: 0;
-    background: #111; /* Темный фон за плеером */
+    background: #111; /* Темный фон под плеер */
     height: 100vh;
     overflow: hidden;
     font-family: Arial, sans-serif;
@@ -23,7 +23,7 @@ body.body {
    ========================= */
 .xh-fake-player {
     width: 100%;
-    max-width: 600px; /* Имитация мобильного экрана */
+    max-width: 600px; /* Имитация мобилки */
     height: 100vh;
     position: relative;
     overflow: hidden;
@@ -38,7 +38,7 @@ body.body {
 .xh-frame {
     width: 100%;
     max-height: 100vh;
-    object-fit: contain; /* Картинка не обрезается, а вписывается */
+    object-fit: contain; 
     opacity: 0;
     transition: opacity 0.25s ease-out;
     z-index: 1;
@@ -49,7 +49,7 @@ body.body {
 }
 
 /* =========================
-   CENTER PLAY BUTTON (WITH PULSE)
+   CENTER PLAY BUTTON (ONLY TRIANGLE, PULSING)
    ========================= */
 .xh-play-btn {
     position: absolute;
@@ -65,33 +65,21 @@ body.body {
     cursor: pointer;
 }
 
-/* Эталонная полупрозрачная серая круглая кнопка */
-.xh-play-btn::before {
-    content: '';
-    width: min(80px, 22vw);
-    height: min(80px, 22vw);
-    background: rgba(128, 128, 128, 0.4);
-    border-radius: 50%;
-    position: absolute;
-    z-index: -1;
-    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
-}
-
 .xh-play-btn.ready {
     opacity: 1;
-    /* Кнопка пульсирует */
-    animation: pulsePlayCircle 1.8s ease-in-out infinite;
+    /* Пульсация самого треугольника */
+    animation: pulseTriangle 1.8s ease-in-out infinite;
 }
 
-/* SVG-треугольник Play (белый, в центре круга) */
+/* Сам треугольник (цвет, размер, тень) */
 .xh-play-btn svg {
-    width: min(40px, 11vw);
-    height: min(40px, 11vw);
-    fill: #fff;
+    width: min(75px, 20vw);
+    height: min(75px, 20vw);
+    fill: rgba(220, 220, 220, 0.95); /* Светло-серый, как в оригинале */
+    filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5)); /* Тень, чтобы не сливался со светлым фоном */
 }
 
-/* Сама пульсация для круга (кнопка вырастает на 15% и сдувается обратно) */
-@keyframes pulsePlayCircle {
+@keyframes pulseTriangle {
     0%   { transform: translate(-50%, -50%) scale(1); }
     50%  { transform: translate(-50%, -50%) scale(1.15); }
     100% { transform: translate(-50%, -50%) scale(1); }
@@ -105,26 +93,28 @@ body.body {
     bottom: 0;
     left: 0;
     width: 100%;
-    padding: 20px 15px;
+    padding: 30px 15px 15px 15px;
     box-sizing: border-box;
-    background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 60%, transparent 100%);
+    /* Градиент затемнения снизу */
+    background: linear-gradient(0deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 60%, transparent 100%);
     z-index: 5;
 }
 
+/* Время над контролами */
 .xh-time {
     color: #fff;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: bold;
-    margin-bottom: 12px;
-    margin-left: 5px;
+    margin-bottom: 10px;
     letter-spacing: 0.5px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
 }
 
 .xh-controls-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
 }
 
 /* =========================
@@ -133,7 +123,7 @@ body.body {
 .xh-progress-container {
     flex-grow: 1;
     height: 3px;
-    background: #444; /* Темная часть полосы */
+    background: #444; 
     position: relative;
     display: flex;
     align-items: center;
@@ -141,15 +131,14 @@ body.body {
 }
 
 .xh-progress-filled {
-    width: 12%; /* Начальное заполнение */
+    width: 12%; 
     height: 100%;
-    background: #ff2a00; /* Ярко-красный */
+    background: #ff2a00; 
     position: relative;
-    /* Полоска медленно движется */
     animation: moveProgressLine 30s linear forwards;
 }
 
-/* Ползунок (красный круг на конце движущейся полоски) */
+/* Красный кружок (ползунок) на конце */
 .xh-progress-filled::after {
     content: "";
     width: 14px;
@@ -162,7 +151,6 @@ body.body {
     transform: translate(50%, -50%);
 }
 
-/* Анимация движения красной полоски (например, от 12% до 35%) */
 @keyframes moveProgressLine {
     from { width: 12%; }
     to   { width: 35%; }
@@ -172,30 +160,30 @@ body.body {
    ICONS & BUTTONS
    ========================= */
 .xh-icon {
-    width: 24px;
-    height: 24px;
-    fill: #fff;
+    width: 30px; /* Увеличил иконки */
+    height: 30px;
+    fill: #e6e6e6; /* Чуть серый цвет иконок */
 }
 
-/* Свитч паузы (серый овал) */
+/* Свитч паузы (пилюля) */
 .xh-pause-pill {
-    width: 32px;
-    height: 16px;
+    width: 38px;
+    height: 20px;
     background: #222;
-    border-radius: 8px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    opacity: 0.6;
+    opacity: 0.8;
 }
 
 .xh-pause-pill::before,
 .xh-pause-pill::after {
     content: '';
     width: 3px;
-    height: 8px;
-    background: #666;
-    margin: 0 1.5px;
+    height: 10px;
+    background: #777;
+    margin: 0 2px;
     border-radius: 1px;
 }
 
@@ -205,7 +193,7 @@ body.body {
 .xh-loader {
     position: absolute;
     inset: 0;
-    display: none; /* Скрыто до тех пор, пока JS не покажет */
+    display: none;
     align-items: center;
     justify-content: center;
     background: rgba(0,0,0,.5);
