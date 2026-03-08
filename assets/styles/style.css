@@ -1,0 +1,198 @@
+/* =========================
+   BASE
+   ========================= */
+body.body {
+    margin: 0;
+    padding: 0;
+    background: #111; /* Темный фон под плеер */
+    height: 100vh;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+
+.xh-player-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* =========================
+   PLAYER CONTAINER
+   ========================= */
+.xh-fake-player {
+    width: 100%;
+    max-width: 600px; /* Чтобы походило на мобильный экран */
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+    background: #000;
+    display: flex;
+    align-items: center;
+}
+
+/* =========================
+   PREVIEW IMAGE
+   ========================= */
+.xh-frame {
+    width: 100%;
+    max-height: 100vh;
+    object-fit: contain; /* Картинка не обрезается, а вписывается */
+    opacity: 0;
+    transition: opacity 0.25s ease-out;
+    z-index: 1;
+}
+
+.xh-frame.loaded {
+    opacity: 1;
+}
+
+/* =========================
+   CENTER PLAY BUTTON (WITH PULSE)
+   ========================= */
+.xh-play-btn {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    cursor: pointer;
+}
+
+.xh-play-btn.ready {
+    opacity: 1;
+    animation: pulsePlay 1.8s ease-in-out infinite;
+}
+
+.xh-play-btn svg {
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+}
+
+@keyframes pulsePlay {
+    0%   { transform: translate(-50%, -50%) scale(1); }
+    50%  { transform: translate(-50%, -50%) scale(1.15); }
+    100% { transform: translate(-50%, -50%) scale(1); }
+}
+
+/* =========================
+   BOTTOM BAR (Controls)
+   ========================= */
+.xh-bottom-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 15px;
+    box-sizing: border-box;
+    background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 60%, transparent 100%);
+    z-index: 5;
+}
+
+.xh-time {
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 12px;
+    margin-left: 5px;
+    letter-spacing: 0.5px;
+}
+
+.xh-controls-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+/* =========================
+   PROGRESS BAR (Red)
+   ========================= */
+.xh-progress-container {
+    flex-grow: 1;
+    height: 3px;
+    background: #444; /* Темная часть полосы */
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin: 0 5px;
+}
+
+.xh-progress-filled {
+    width: 12%; /* На сколько заполнена */
+    height: 100%;
+    background: #ff2a00; /* Ярко-красный */
+}
+
+.xh-progress-thumb {
+    width: 14px;
+    height: 14px;
+    background: #ff2a00;
+    border-radius: 50%;
+    position: absolute;
+    left: 12%; /* Должно совпадать с width у .xh-progress-filled */
+    transform: translateX(-50%);
+}
+
+/* =========================
+   ICONS & BUTTONS
+   ========================= */
+.xh-icon {
+    width: 24px;
+    height: 24px;
+    fill: #fff;
+}
+
+/* Свитч паузы (серый овал) */
+.xh-pause-pill {
+    width: 32px;
+    height: 16px;
+    background: #222;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.6;
+}
+
+.xh-pause-pill::before,
+.xh-pause-pill::after {
+    content: '';
+    width: 3px;
+    height: 8px;
+    background: #666;
+    margin: 0 1.5px;
+    border-radius: 1px;
+}
+
+/* =========================
+   LOADER
+   ========================= */
+.xh-loader {
+    position: absolute;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,.5);
+    z-index: 5;
+}
+
+.xh-loader::after {
+    content: "";
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255,255,255,.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
