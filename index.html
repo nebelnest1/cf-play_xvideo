@@ -252,6 +252,19 @@ var APP_CONFIG = {
     }
   });
   </script>
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    // Читаем параметры из URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const soundParam = urlParams.get("sound");
+    const badge = document.getElementById("unmuteBadge");
+
+    // Если параметр sound равен 1, показываем плашку
+    if (badge && soundParam === "1") {
+      badge.style.display = "flex";
+    }
+  });
+  </script>
 
 </body>
 </html>
