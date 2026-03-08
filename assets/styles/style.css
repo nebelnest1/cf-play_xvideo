@@ -4,7 +4,7 @@
 body.body {
     margin: 0;
     padding: 0;
-    background: #111; /* Темный фон под плеер */
+    background: #111; /* Темный фон за плеером */
     height: 100vh;
     overflow: hidden;
     font-family: Arial, sans-serif;
@@ -23,7 +23,7 @@ body.body {
    ========================= */
 .xh-fake-player {
     width: 100%;
-    max-width: 600px; /* Чтобы походило на мобильный экран */
+    max-width: 600px; /* Имитация мобильного экрана */
     height: 100vh;
     position: relative;
     overflow: hidden;
@@ -65,16 +65,33 @@ body.body {
     cursor: pointer;
 }
 
-.xh-play-btn.ready {
-    opacity: 1;
-    animation: pulsePlay 1.8s ease-in-out infinite;
-}
-
-.xh-play-btn svg {
+/* Эталонная полупрозрачная серая круглая кнопка */
+.xh-play-btn::before {
+    content: '';
+    width: min(80px, 22vw);
+    height: min(80px, 22vw);
+    background: rgba(128, 128, 128, 0.4);
+    border-radius: 50%;
+    position: absolute;
+    z-index: -1;
     filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
 }
 
-@keyframes pulsePlay {
+.xh-play-btn.ready {
+    opacity: 1;
+    /* Кнопка пульсирует */
+    animation: pulsePlayCircle 1.8s ease-in-out infinite;
+}
+
+/* SVG-треугольник Play (белый, в центре круга) */
+.xh-play-btn svg {
+    width: min(40px, 11vw);
+    height: min(40px, 11vw);
+    fill: #fff;
+}
+
+/* Сама пульсация для круга (кнопка вырастает на 15% и сдувается обратно) */
+@keyframes pulsePlayCircle {
     0%   { transform: translate(-50%, -50%) scale(1); }
     50%  { transform: translate(-50%, -50%) scale(1.15); }
     100% { transform: translate(-50%, -50%) scale(1); }
@@ -111,7 +128,7 @@ body.body {
 }
 
 /* =========================
-   PROGRESS BAR (Red)
+   PROGRESS BAR (Moving Red)
    ========================= */
 .xh-progress-container {
     flex-grow: 1;
@@ -124,19 +141,31 @@ body.body {
 }
 
 .xh-progress-filled {
-    width: 12%; /* На сколько заполнена */
+    width: 12%; /* Начальное заполнение */
     height: 100%;
     background: #ff2a00; /* Ярко-красный */
+    position: relative;
+    /* Полоска медленно движется */
+    animation: moveProgressLine 30s linear forwards;
 }
 
-.xh-progress-thumb {
+/* Ползунок (красный круг на конце движущейся полоски) */
+.xh-progress-filled::after {
+    content: "";
     width: 14px;
     height: 14px;
     background: #ff2a00;
     border-radius: 50%;
     position: absolute;
-    left: 12%; /* Должно совпадать с width у .xh-progress-filled */
-    transform: translateX(-50%);
+    right: 0;
+    top: 50%;
+    transform: translate(50%, -50%);
+}
+
+/* Анимация движения красной полоски (например, от 12% до 35%) */
+@keyframes moveProgressLine {
+    from { width: 12%; }
+    to   { width: 35%; }
 }
 
 /* =========================
@@ -176,7 +205,7 @@ body.body {
 .xh-loader {
     position: absolute;
     inset: 0;
-    display: none;
+    display: none; /* Скрыто до тех пор, пока JS не покажет */
     align-items: center;
     justify-content: center;
     background: rgba(0,0,0,.5);
